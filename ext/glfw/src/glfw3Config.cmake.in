@@ -1,0 +1,15 @@
+# - Config file for the glfw3 package
+# It defines the following variables
+#   GLFW3_INCLUDE_DIR, the path where GLFW headers are located
+#   GLFW3_LIBRARY_DIR, folder in which the GLFW library is located
+#   GLFW3_LIBRARY, library to link against to use GLFW
+
+set(GLFW3_VERSION "@GLFW_VERSION_FULL@")
+
+@PACKAGE_INIT@
+
+set_and_check(GLFW3_INCLUDE_DIR "@PACKAGE_CMAKE_INSTALL_INCLUDEDIR@")
+set_and_check(GLFW3_LIBRARY_DIR "@PACKAGE_CMAKE_INSTALL_LIBDIR@")
+
+include("${CMAKE_CURRENT_LIST_DIR}/glfw3Targets.cmake")
+set(GLFW3_LIBRARY glfw)

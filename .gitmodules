@@ -1,0 +1,6 @@
+[submodule "ext/eigen"]
+	path = ext/eigen
+	url = https://github.com/eigenteam/eigen-git-mirror
+[submodule "ext/nanovg"]
+	path = ext/nanovg
+	url = https://github.com/memononen/nanovg
