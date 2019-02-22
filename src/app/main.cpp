@@ -60,28 +60,28 @@ public:
 	}
 
 	virtual void process(){
-		Vector2f vel(0, 0);
-		if(keyDown[GLFW_KEY_LEFT])
-			vel[0] -= 1;
-		if(keyDown[GLFW_KEY_RIGHT])
-			vel[0] += 1;
-		if(keyDown[GLFW_KEY_UP])
-			vel[1] -= 1;
-		if(keyDown[GLFW_KEY_DOWN])
-			vel[1] += 1;
-		circleKey.pos += vel.normalized() * 0.03;
+		std::chrono::high_resolution_clock::time_point now = std::chrono::high_resolution_clock::now();
+		if(std::chrono::duration_cast<std::chrono::milliseconds>(now-lastFrame).count() > 16){
+			Vector2f vel(0, 0);
+			if(keyDown[GLFW_KEY_LEFT])
+				vel[0] -= 1;
+			if(keyDown[GLFW_KEY_RIGHT])
+				vel[0] += 1;
+			if(keyDown[GLFW_KEY_UP])
+				vel[1] -= 1;
+			if(keyDown[GLFW_KEY_DOWN])
+				vel[1] += 1;
+			circleKey.pos += vel/(vel.norm()+1e-10) * 0.03;
+			
+			bool isInsideKey = rect.isInside(circleKey.pos, circleKey.radius);
+			bool isInsideMouse = rect.isInside(circleMouse.pos, circleMouse.radius);
+			circleKey.colorFill = (isInsideKey) ? (isInsideMouse ? COLOR_SOLVED : COLOR_IN) : COLOR_OUT;
+			circleMouse.colorFill = (isInsideMouse) ? (isInsideKey ? COLOR_SOLVED : COLOR_IN) : COLOR_OUT;
 
-		bool isInsideKey = rect.isInside(circleKey.pos, circleKey.radius);
-		bool isInsideMouse = rect.isInside(circleMouse.pos, circleMouse.radius);
-		circleKey.colorFill = (isInsideKey) ? (isInsideMouse ? COLOR_SOLVED : COLOR_IN) : COLOR_OUT;
-		circleMouse.colorFill = (isInsideMouse) ? (isInsideKey ? COLOR_SOLVED : COLOR_IN) : COLOR_OUT;
+			if(draggingCircle)
+				circleMouse.pos = Vector2f(cursorPos[0], cursorPos[1]) - draggingCircleOffset;
 
-		if(draggingCircle)
-			circleMouse.pos = Vector2f(cursorPos[0], cursorPos[1]) - draggingCircleOffset;
-
-		if(isInsideKey && isInsideMouse){
-			std::chrono::high_resolution_clock::time_point now = std::chrono::high_resolution_clock::now();
-			if(std::chrono::duration_cast<std::chrono::milliseconds>(now-lastFrame).count() > 16){
+			if(isInsideKey && isInsideMouse){
 				float randX = (20.f*((float) rand() / (RAND_MAX)) + .1f) * ((rand()%2) ? -1 : 1);
 				float randY = (20.f*((float) rand() / (RAND_MAX)) + .1f) * ((rand()%2) ? -1 : 1);
 				float randR = 30.f*((float) rand() / (RAND_MAX)) + 10.f;
@@ -96,11 +96,11 @@ public:
 
 				for(auto &c : circles)
 					c.second.pos += c.first;
-				lastFrame = now;
 			}
-		}
-		else{
-			circles.clear();
+			else{
+				circles.clear();
+			}
+			lastFrame = now;
 		}
 	}
 
@@ -148,6 +148,7 @@ public:
 protected:
 	virtual void mousePressed(int button) {
 		Vector2f x = Vector2f(cursorPos[0], cursorPos[1]);
+		std::cout << "x = " << x << ", " << circleMouse.pos << std::endl;
 		if(button == GLFW_MOUSE_BUTTON_LEFT && circleMouse.isInside(x)) {
 			draggingCircle = true;
 			draggingCircleOffset = x - circleMouse.pos;

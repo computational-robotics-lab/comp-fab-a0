@@ -65,6 +65,7 @@ public:
 		glfwSetWindowCenter(window);
 		glfwMakeContextCurrent(window);
 		glfwGetFramebufferSize(window, &display_w, &display_h);
+		glfwGetWindowSize(window, &window_w, &window_h);
 		glfwSwapInterval(0); // Enable vsync (1)
 
 		// Initialize OpenGL loader
@@ -141,8 +142,8 @@ public:
 				return;
 
 			auto app = static_cast<App*>(glfwGetWindowUserPointer(window));
-			app->cursorPos[0] = xpos;
-			app->cursorPos[1] = ypos;
+			app->cursorPos[0] = xpos * ((double)app->display_w / (double)app->window_w);
+			app->cursorPos[1] = ypos * ((double)app->display_h / (double)app->window_h);
 
 		};
 		glfwSetCursorPosCallback(window, cursor_callback);
@@ -159,6 +160,7 @@ public:
 			// draw
 			glfwMakeContextCurrent(window);
 			glfwGetFramebufferSize(window, &display_w, &display_h);
+			glfwGetWindowSize(window, &window_w, &window_h);
 			glViewport(0, 0, display_w, display_h);
 			glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
 			glClear(GL_COLOR_BUFFER_BIT);
@@ -167,7 +169,7 @@ public:
 			ImGui_ImplGlfw_NewFrame();
 
 			ImGui::NewFrame();
-			nvgBeginFrame(vg, display_w, display_h, 2.f);
+			nvgBeginFrame(vg, display_w, display_h, 1.f);
 			drawScene();
 			nvgEndFrame(vg);
 			ImGui::EndFrame();
@@ -281,7 +283,8 @@ protected:
 
 protected:
 	GLFWwindow* window;
-	int display_w, display_h;
+	int display_w, display_h; // size of frame buffer
+	int window_w, window_h; // size of window
 	struct NVGcontext* vg;
 
 	std::map<int, bool> keyDown;
