@@ -8,9 +8,8 @@
 #include <Eigen/Core>
 using Eigen::Vector2f;
 
-class Circle
+struct Circle
 {
-public:
 	Circle() {}
 	Circle(const Vector2f &pos, float radius, const NVGcolor &colorFill, const NVGcolor &colorStroke)
 		: pos(pos), radius(radius), colorFill(colorFill), colorStroke(colorStroke) {}
@@ -24,9 +23,9 @@ public:
 	NVGcolor colorFill, colorStroke;
 };
 
-struct Rectangle {
-	Rectangle(){}
-	Rectangle(const Vector2f &center, Vector2f size, const NVGcolor &colorFill, const NVGcolor &colorStroke)
+struct Box {
+	Box(){}
+	Box(const Vector2f &center, Vector2f size, const NVGcolor &colorFill, const NVGcolor &colorStroke)
 		: center(center), size(size), colorFill(colorFill), colorStroke(colorStroke) {}
 
 	bool isInside(const Vector2f &x, float slack = 0.f) {
@@ -55,7 +54,7 @@ public:
 
 		circleKey = {{display_w/2-200, display_h/2-100}, 30, COLOR_OUT, nvgRGBA(50, 50, 50, 100)};
 		circleMouse = {{display_w/2-200, display_h/2+100}, 20, COLOR_OUT, nvgRGBA(50, 50, 50, 100)};
-		rect = Rectangle({display_w/2+200, display_h/2}, Vector2f(100, 150), nvgRGBA(50, 50, 50, 100), nvgRGBA(50, 50, 50, 200));
+		rect = Box({display_w/2+200, display_h/2}, Vector2f(100, 150), nvgRGBA(50, 50, 50, 100), nvgRGBA(50, 50, 50, 200));
 
 	}
 
@@ -110,12 +109,12 @@ public:
 			ImGui::Begin("Hello World!");
 			ImGui::TextWrapped("Use the arrow keys to move the first circle.");
 			ImGui::TextWrapped("Drag the other circle with the mouse.");
-			ImGui::TextWrapped("Put them both in the rectangle!");
+			ImGui::TextWrapped("Put them both in the Box!");
 			if(ImGui::Button("Show/Hide Circles")) showCircles = !showCircles;
 			ImGui::End();
 		}
 
-		// draw rectangle
+		// draw Box
 		nvgBeginPath(vg);
 		nvgRect(vg, rect.center[0]-rect.size[0]/2, rect.center[1]-rect.size[1]/2, rect.size[0], rect.size[1]);
 		nvgFillColor(vg, rect.colorFill);
@@ -178,7 +177,7 @@ private:
 private:
 	bool showCircles = true;
 	Circle circleKey, circleMouse;
-	Rectangle rect;
+	Box rect;
 	bool draggingCircle = false;
 	Vector2f draggingCircleOffset;
 	std::deque<std::pair<Vector2f, Circle>> circles;
