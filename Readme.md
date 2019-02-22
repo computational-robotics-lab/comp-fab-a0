@@ -18,13 +18,22 @@ Make sure you install the following:
 
 On Windows, you can use Git Bash to perform the steps mentioned below.
 
+> Note: There seems to be a github classroom bug, where the starter code is not imported. Thus, cancel the import process and import the code yourself, like so:
+> After step 1: 
+> 
+> `cd comp-fab-a0-XXX`
+> 
+> `git pull https://github.com/computational-robotics-lab/comp-fab-a0` 
+> 
+> `git submodule update --init --recursive`
+
 1. Clone this repository and load submodules:
     ```
-    git clone --recurse-submodules git@github.com:computational-robotics-lab/comp-fab-assignement0.git`
+    git clone --recurse-submodules YOUR_GIT_URL
     ```
 2. Make build folder
     ```
-    cd comp-fab-assignement0
+    cd comp-fab-a0-XXX
     mkdir build && cd build
     ```
 3. Compile code and run executable
@@ -38,6 +47,7 @@ On Windows, you can use Git Bash to perform the steps mentioned below.
         * open `assignement0.sln` in Visual Studio
         * in the project explorer, right-click target "app" and set as startup app.
         * Hit F5!
+
 
 ### Some comments
 
