@@ -71,7 +71,7 @@ public:
 				vel[1] -= 1;
 			if(keyDown[GLFW_KEY_DOWN])
 				vel[1] += 1;
-			circleKey.pos += vel/(vel.norm()+1e-10) * 0.03;
+			circleKey.pos += vel/(vel.norm()+1e-10) * 3;
 			
 			bool isInsideKey = rect.isInside(circleKey.pos, circleKey.radius);
 			bool isInsideMouse = rect.isInside(circleMouse.pos, circleMouse.radius);
@@ -148,7 +148,6 @@ public:
 protected:
 	virtual void mousePressed(int button) {
 		Vector2f x = Vector2f(cursorPos[0], cursorPos[1]);
-		std::cout << "x = " << x << ", " << circleMouse.pos << std::endl;
 		if(button == GLFW_MOUSE_BUTTON_LEFT && circleMouse.isInside(x)) {
 			draggingCircle = true;
 			draggingCircleOffset = x - circleMouse.pos;
