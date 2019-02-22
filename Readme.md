@@ -1,5 +1,11 @@
 # Assignement 0
 
+Please fill in your name and student id
+
+| First name: | Last name: | Student ID: |
+| ----------- | ---------- | ----------- |
+|             |            |             |
+
 This assignement is to make sure your computer and you are both set up for the next three assignements. You do not have to hand-in anything. However, you can already play around with the code, and commit and push changes to your repository. For future assignements, you will have to commit and push your solutions to github. Commits (or rather pushes) after the deadline will be disregarded. So make sure you are ready and test out things with this assignement.
 
 ### Prerequisites
